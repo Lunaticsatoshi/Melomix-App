@@ -1,24 +1,31 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { Home, Heart, Plus, CalendarSearch, Bell, User, MessageCircle, Search } from 'lucide-react-native'
+import { Platform, View, StyleSheet } from 'react-native';
+import { Home, Radio, DiamondPlus, Activity } from 'lucide-react-native';
+import { useColorScheme } from 'nativewind';
+import { BlurView } from '@react-native-community/blur';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Colors } from '../utils/colors';
+
+import { Colors } from 'utils/colors';
+import { getSVGColor, getSVGActiveColor } from 'utils/helpers';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-import { HomeScreen } from '../screens/HomeScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
-import { FavoriteScreen } from '../screens/FavoriteScreen';
-import { CreateRoomScreen } from '../screens/CreateRoomScreen';
-import { ScheduleScreen } from '../screens/ScheduleScreen';
+import { HomeScreen } from 'screens/HomeScreen';
+import { ProfileScreen } from 'screens/ProfileScreen';
+import { FavoriteScreen } from 'screens/FavoriteScreen';
+import { CreateRoomScreen } from 'screens/CreateRoomScreen';
+import { ScheduleScreen } from 'screens/ScheduleScreen';
+
+import { Avatar } from 'components/Avatar';
+import Header from 'screens/HomeScreen/components/Header';
 
 const HomeScreens = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Main" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Main" component={HomeScreen} options={{ header: () => <Header /> }} />
       <Stack.Screen
         name="FavoriteScreen"
         component={FavoriteScreen}
@@ -44,21 +51,44 @@ const HomeScreens = () => {
 };
 
 const TabNavigation = () => {
+  const { colorScheme } = useColorScheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused }) => {
           let Icon: any;
           if (route.name === 'Home') {
-            Icon = focused ? <Home fill={Colors.red400} /> : <Home color="black" />;
+            Icon = focused ? (
+              <Home fill={Colors.primary} color={getSVGActiveColor(colorScheme)} />
+            ) : (
+              <Home color={getSVGColor(colorScheme)} />
+            );
           } else if (route.name === 'Favorite') {
-            Icon = focused ? <Heart fill={Colors.red400} /> : <Heart color="black" />;
+            Icon = focused ? (
+              <Radio fill={Colors.primary} color={Colors.primary} />
+            ) : (
+              <Radio color={getSVGColor(colorScheme)} />
+            );
           } else if (route.name === 'AddRoom') {
-            Icon = focused ? <Plus height={26} width={26} fill={Colors.red400} /> : <Plus height={26} width={26} color="black" />;
+            Icon = focused ? (
+              <DiamondPlus height={26} width={26} fill={Colors.primary} color={getSVGActiveColor(colorScheme)} />
+            ) : (
+              <DiamondPlus height={26} width={26} color={getSVGColor(colorScheme)} />
+            );
           } else if (route.name === 'Schedule') {
-            Icon = focused ? <CalendarSearch fill={Colors.red400} /> : <CalendarSearch color="black" />;
+            Icon = focused ? (
+              <Activity fill={Colors.primary} color={Colors.primary} />
+            ) : (
+              <Activity color={getSVGColor(colorScheme)} />
+            );
           } else if (route.name === 'Profile') {
-            Icon = focused ? <User fill={Colors.red400} /> : <User color="black" />;
+            Icon = (
+              <Avatar
+                variant="md"
+                imageUri="https://github.com/mrzachnugent.png"
+                defaultSource="https://i.pravatar.cc/300"
+              />
+            );
           }
           return <>{Icon}</>;
         },
@@ -66,11 +96,20 @@ const TabNavigation = () => {
         tabBarInactiveTintColor: Colors.neutral900,
         tabBarLabelStyle: { fontSize: 12 },
         headerShown: false,
+        tabBarShowLabel: false,
+        tabBarBackground: () => (
+          <View className="bg-none absolute bottom-0 h-full w-full">
+            <BlurView style={{ height: 100 }} blurType={colorScheme === 'dark' ? 'dark' : 'regular'} blurAmount={10}></BlurView>
+          </View>
+        ),
         tabBarStyle: {
           paddingVertical: 8,
           paddingHorizontal: 16,
-          borderTopWidth: 1,
-          borderTopColor: Colors.cream100
+          borderTopWidth: 0,
+          position: 'absolute',
+          bottom: 0,
+          // backgroundColor: colorScheme === 'dark' ? Colors.backgroundDark : Colors.background
+          backgroundColor: 'transparent'
         },
         tabBarItemStyle: {
           paddingHorizontal: 8
