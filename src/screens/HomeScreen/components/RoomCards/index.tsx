@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { AudioWaveform, Dot, Headphones } from 'lucide-react-native';
 
-import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '../../../../components/ui/card';
-import { AvatarSet } from '../../../../components/Avatar';
-import { Badge } from '../../../../components/ui/badge';
-import { Text } from '../../../../components/ui/text';
+import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from 'components/ui/card';
+import { AvatarSet } from 'components/Avatar';
+import { Badge } from 'components/ui/badge';
+import { Text } from 'components/ui/text';
 
 const RoomCard = () => {
   const avatarArr = [
@@ -37,7 +37,7 @@ const RoomCard = () => {
       </CardHeader>
       <CardContent className="flex flex-row justify-center items-center">
         <AvatarSet className='-mb-3' avatarArray={avatarArr} variant="sm" />
-        <CardDescription numberOfLines={1} className="text-sm text-text-secondary ml-2">Utkarsh Agarwal, Satoshi, Shadcnquetrrtuqerubetrcbuyertb b7wrbt eurtynw yrtewn iryweiru </CardDescription>
+        <CardDescription numberOfLines={1} className="text-sm text-text-secondary ml-2 w-64">Utkarsh Agarwal, Satoshi, Shadcnquetrrtuqerubetrcbuyertb b7wrbt eurtynw yrtewn iryweiru </CardDescription>
       </CardContent>
       <CardFooter className="py-2 px-4">
         <Badge variant="secondary" className="flex flex-row justify-center items-center">
